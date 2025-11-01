@@ -1,0 +1,27 @@
+{
+  "name": "ROS 2 Humble Workspace",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "workspaceFolder": "/workspaces/WareHouseRobotMapping",
+  "remoteUser": "root",
+  "containerEnv": {
+    "ROS_DISTRO": "humble",
+    "RMW_IMPLEMENTATION": "rmw_fastrtps_cpp",
+    "DEBIAN_FRONTEND": "noninteractive"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-iot.vscode-ros",
+        "ms-vscode.cpptools",
+        "twxs.cmake",
+        "ms-python.python"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "postCreateCommand": "set -e; rosdep update; if [ -d src ]; then rosdep install -y --from-paths src --ignore-src -r; colcon build; fi"
+}
