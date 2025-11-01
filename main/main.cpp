@@ -4,7 +4,7 @@
 #include "object_tracking/data_types/pose_2d.h"
 #include "object_tracking/object_tracker.h"
 #include "object_tracking/data_types/objects_types.h"
-#include "interpolation\interpolate_vector.h"
+#include "interpolation/interpolate_vector.h"
 #include <string.h>
 #include <fstream>
 
@@ -12,8 +12,8 @@ int main(int argc, char **argv)
 {
   std::vector<TimedRobotPose> robot_poses{};
   std::vector<TimedDetectionPoses> detections{};
-  //TODO: replace with relative directory
-  nlohmann::json data_json = ReadJson("C:/Users/bader/OneDrive/Documents/RoboticChallenge/main/data.json");
+  // Read input JSON (use relative path within repo)
+  nlohmann::json data_json = ReadJson("main/data.json");
   ParseRobotData(robot_poses, data_json);
   ParseDetectionData(detections, data_json);
 
@@ -52,15 +52,15 @@ int main(int argc, char **argv)
 
   ObjectTracker object_tracker{};
 
-  //TODO: replace with relative directory
-  WriteOutRobotPoses(robot_poses_interp, "C:/Users/bader/OneDrive/Documents/RoboticChallenge/main/robot_poses.json");
-  WriteOutDetectionPoses(detections, "C:/Users/bader/OneDrive/Documents/RoboticChallenge/main/detections.json");
+  // Write intermediate outputs to repo-relative paths
+  WriteOutRobotPoses(robot_poses_interp, "main/robot_poses.json");
+  WriteOutDetectionPoses(detections, "main/detections.json");
 
   object_tracker.Update(robot_poses_interp, detections);
   object_tracker.ProduceDetectionPosesInGlobalCs();
   auto results = object_tracker.GetLoadCarriersPosesInCsGlobal();
 
-  WriteOutDetectionPosesInCsGloabl(results, "C:/Users/bader/OneDrive/Documents/RoboticChallenge/main/detections_output.json");
+  WriteOutDetectionPosesInCsGloabl(results, "main/detections_output.json");
 
   return 0;
 }
