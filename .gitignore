@@ -1,7 +1,17 @@
-bazel-bazel-roboticchallenge
-bazel-roboticchallenge
+# Bazel symlinked work dirs and outputs
+bazel-*/
 bazel-bin/
 bazel-out/
-external/
 bazel-testlogs/
-.vscode
+
+# Optional: legacy external folder (depending on symlink layout)
+external/
+
+# Generic local build output directories (do NOT confuse with Bazel BUILD files)
+[Bb]uild/
+**/[Bb]uild/
+out/
+dist/
+
+# VS Code settings (user/editor specific)
+.vscode/
