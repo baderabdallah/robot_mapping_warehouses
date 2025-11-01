@@ -1,5 +1,5 @@
-#include "interpolation\interpolate_vector.h"
-#include "interpolation\interp.hpp"
+#include "interpolation/interpolate_vector.h"
+#include "interpolation/interp.hpp"
 
 std::vector<double> InterpolateDoubleVector(std::vector<double> &time, std::vector<double> &data, std::vector<double> &time_reference)
 {

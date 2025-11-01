@@ -35,9 +35,8 @@ Usage:
 Notes:
   - This script expects Bazel to be installed on your system. If Bazel is missing,
     the script will fail but will provide a helpful message.
-  - The project currently contains hard-coded Windows paths in `main/main.cpp`.
-    You may need to update `main/main.cpp` to use relative paths or pass file
-    locations via command-line arguments before running the binary.
+  - The main binary accepts an optional input path (defaults to main/data.json).
+    Outputs are written alongside the input file.
 EOF
 }
 
@@ -64,7 +63,10 @@ run_run() {
     return 2
   fi
   echo "Running //main:main (passing through any extra args)..."
-  # pass any remaining args to the binary
+  # pass any remaining args to the binary; if none, pass default absolute input path
+  if [[ $# -eq 0 ]]; then
+    set -- "$ROOT_DIR/main/data.json"
+  fi
   $BAZEL run $BAZEL_FLAGS //main:main -- "$@"
 }
 
@@ -79,12 +81,36 @@ run_test() {
 
 run_plot() {
   if [[ -n "$BAZEL" ]]; then
-    if $BAZEL run $BAZEL_FLAGS //main:plot; then
-      return 0
+    # Only try bazel if the target exists to avoid noisy errors
+    if $BAZEL query $BAZEL_FLAGS //main:plot >/dev/null 2>&1; then
+      if $BAZEL run $BAZEL_FLAGS //main:plot; then
+        return 0
+      fi
     fi
   fi
   if command -v python3 >/dev/null 2>&1 && [[ -f main/plot.py ]]; then
+    # Ensure plotting deps are available
+  if ! python3 - <<'PY'
+import sys
+missing = []
+for m in ("matplotlib","numpy","tornado"):
+    try:
+        __import__(m)
+    except Exception:
+        missing.append(m)
+if missing:
+    sys.exit(1)
+PY
+    then
+    echo "Installing required Python packages (matplotlib, numpy, tornado) for plotting..."
+      if command -v pip3 >/dev/null 2>&1; then
+    pip3 install --no-cache-dir matplotlib numpy tornado || true
+      fi
+    fi
     echo "Running main/plot.py with python3..."
+    if [[ -z "${DISPLAY:-}" ]]; then
+      echo "Warning: DISPLAY is not set. If you're on macOS and want an interactive window, run scripts/macos_xquartz_display.sh on the host and set DISPLAY inside the container (e.g., export DISPLAY=host.docker.internal:0)." >&2
+    fi
     python3 main/plot.py
     return $?
   fi

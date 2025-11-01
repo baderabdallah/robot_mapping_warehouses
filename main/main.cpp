@@ -8,12 +8,21 @@
 #include <string.h>
 #include <fstream>
 
+static std::string Dirname(const std::string &path)
+{
+  auto pos = path.find_last_of("/\\");
+  if (pos == std::string::npos)
+    return std::string{"."};
+  return path.substr(0, pos);
+}
+
 int main(int argc, char **argv)
 {
   std::vector<TimedRobotPose> robot_poses{};
   std::vector<TimedDetectionPoses> detections{};
-  // Read input JSON (use relative path within repo)
-  nlohmann::json data_json = ReadJson("main/data.json");
+  // Read input JSON (path from argv[1] if provided, otherwise default)
+  std::string input_path = (argc > 1) ? std::string(argv[1]) : std::string("main/data.json");
+  nlohmann::json data_json = ReadJson(input_path);
   ParseRobotData(robot_poses, data_json);
   ParseDetectionData(detections, data_json);
 
@@ -52,15 +61,16 @@ int main(int argc, char **argv)
 
   ObjectTracker object_tracker{};
 
-  // Write intermediate outputs to repo-relative paths
-  WriteOutRobotPoses(robot_poses_interp, "main/robot_poses.json");
-  WriteOutDetectionPoses(detections, "main/detections.json");
+  // Write intermediate outputs next to the input file
+  std::string base_dir = Dirname(input_path);
+  WriteOutRobotPoses(robot_poses_interp, base_dir + "/robot_poses.json");
+  WriteOutDetectionPoses(detections, base_dir + "/detections.json");
 
   object_tracker.Update(robot_poses_interp, detections);
   object_tracker.ProduceDetectionPosesInGlobalCs();
   auto results = object_tracker.GetLoadCarriersPosesInCsGlobal();
 
-  WriteOutDetectionPosesInCsGloabl(results, "main/detections_output.json");
+  WriteOutDetectionPosesInCsGloabl(results, base_dir + "/detections_output.json");
 
   return 0;
 }

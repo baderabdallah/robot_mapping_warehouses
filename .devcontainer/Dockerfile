@@ -23,6 +23,11 @@ RUN apt-get update && apt-get install -y \
     iputils-ping \
     net-tools \
     ca-certificates \
+    python3-numpy \
+    python3-matplotlib \
+    python3-pyqt5 \
+    python3-tk \
+    libgl1 \
     python3-pip \
     python3-vcstool \
     python3-colcon-common-extensions \

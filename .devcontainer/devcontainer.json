@@ -8,8 +8,14 @@
   "containerEnv": {
     "ROS_DISTRO": "humble",
     "RMW_IMPLEMENTATION": "rmw_fastrtps_cpp",
-    "DEBIAN_FRONTEND": "noninteractive"
+    "DEBIAN_FRONTEND": "noninteractive",
+    // Pass host DISPLAY into the container when available (Linux hosts)
+    "DISPLAY": "${localEnv:DISPLAY}"
   },
+  // Mount the X11 Unix socket so GUI apps (e.g., matplotlib) can display on Linux hosts
+  "mounts": [
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [

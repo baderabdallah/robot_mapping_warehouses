@@ -1,5 +1,4 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
-load("@python_deps//:requirements.bzl", "requirement")
 
 
 
@@ -26,6 +25,7 @@ cc_library(
 cc_binary(
     name = "main",
     srcs = ["main.cpp"],
+    data = ["data.json"],
     deps = [
         ":parse_data",
         ":writers",
@@ -33,7 +33,6 @@ cc_binary(
         "//object_tracking/data_types:data_types",
         "//nohlman:nohlman",
         "//interpolation:interpolation",
-        "@com_google_googletest//:gtest_main",
     ],
 )
 
