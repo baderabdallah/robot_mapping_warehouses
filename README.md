@@ -14,6 +14,10 @@ Solution demo:
 
 https://user-images.githubusercontent.com/43698361/182023452-6c452dad-5a40-4414-be3f-16035a98391f.mp4
 
+Live preview (GIF)
+
+![Warehouse mapping animation](plot/animation.gif)
+
 
 How to run
 
@@ -21,10 +25,36 @@ How to run
 - Run the C++ program: `./run.sh run [path/to/data.json]`
 	- Default input is `main/data.json` and outputs are written alongside it.
 - Plot interactively: `./run.sh plot`
-		- This runs `python3 main/plot.py` and opens an interactive plot:
+		- This runs `python3 plot/plot.py` and opens an interactive plot:
 			- If a desktop display is available, it uses a native GUI backend (Qt5/Tk).
 			- If not (e.g., devcontainer/Codespaces), it falls back to a browser-based interactive backend (WebAgg) and prints a URL/port to open.
 - All-in-one: `./run.sh all`
+
+Export to GIF/MP4
+
+- Export animation (auto-installs Python deps if missing):
+	- GIF: `./run.sh export gif plot/animation.gif`
+	- MP4: `./run.sh export mp4 plot/animation.mp4`
+	- You can also pass FPS: `./run.sh export gif plot/animation.gif --fps 20`
+	- By default, it saves to `plot/animation.gif` if no path is given.
+
+Browser controls (WebAgg)
+
+- When plotting via WebAgg (browser), click the page to focus and use:
+	- Space: play/pause
+	- Left/Right: step frames
+	- [: slower, ]: faster
+	- f: fullscreen (browser may require interaction)
+	- h: toggle HUD overlay
+	- Size presets: 1=680px, 2=720px, 3=740px, 4=820px, 5=900px
+	- +/-: increase/decrease height by 80px (preserves aspect)
+
+Sizing tips
+
+- To adjust the default browser canvas height without using keys, set env var before plotting:
+	- `WEBAGG_HEIGHT_PX=740 ./run.sh plot`
+	- Hide toolbar: `WEBAGG_HIDE_TOOLBAR=1 ./run.sh plot`
+	- Fill-axes mode removes axes/legend/title in browser for maximum space (default ON). Disable: `WEBAGG_FILL_AXES=0 ./run.sh plot`
 
 Notes
 - Bazel is pinned to 7.x via bazelisk for compatibility with WORKSPACE mode.
@@ -54,6 +84,7 @@ Browser-based interactive fallback (WebAgg)
 
 - If no DISPLAY is available, the plot auto-switches to the WebAgg backend and serves the figure over HTTP (default port 8988). VS Code typically auto-forwards this port; check the Ports panel if needed.
 - If prompted to install packages at runtime, the script may add tornado to enable WebAgg.
+- The WebAgg page is optimized to fill the browser with the plot (axes hidden, equal aspect preserved). Use the browser controls above to tweak playback and size.
 
 Linux GUI (optional)
 

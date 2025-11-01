@@ -4,6 +4,13 @@ bazel-bin/
 bazel-out/
 bazel-testlogs/
 
+# Bazel user-specific/local configs (should not be committed)
+.bazelrc.user
+.bazelrc.local
+
+# In case runfiles dirs leak into the workspace (usually under bazel-bin)
+*.runfiles/
+
 # Optional: legacy external folder (depending on symlink layout)
 external/
 
