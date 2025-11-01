@@ -18,13 +18,13 @@ Live preview (GIF)
 
 ```mermaid
 flowchart TD
-	A[Input: data.json (robot poses, load detections)]
-	B[Preprocess timelines (align timestamps, interpolate gaps)]
-	C[Resolve orientation flips (handle 180 deg cases)]
-	D[Transform to global frame (compose transforms)]
-	E[Smooth trajectories (filter noise)]
-	F[Outputs (robot_poses.json, detections_output.json)]
-	G[Visualize or share (interactive plot, GIF/MP4)]
+	A[Input data json robot poses and load detections]
+	B[Preprocess timelines align timestamps interpolate gaps]
+	C[Resolve orientation flips handle 180 deg cases]
+	D[Transform to global frame compose transforms]
+	E[Smooth trajectories filter noise]
+	F[Outputs robot poses json and detections output json]
+	G[Visualize or share interactive plot GIF or MP4]
 
 	A --> B --> C --> D --> E --> F --> G
 ```
