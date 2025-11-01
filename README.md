@@ -18,12 +18,12 @@ Live preview (GIF)
 
 ```mermaid
 flowchart TD
-	A[Input: data.json<br/>• Robot poses (origin frame)<br/>• Load detections (robot frame)] --> B[Preprocess timelines<br/>• Align timestamps<br/>• Interpolate gaps]
-	B --> C[Resolve orientation ambiguity<br/>• Handle frequent 180° flips]
-	C --> D[Transform to global frame<br/>• Compose robot and load transforms]
-	D --> E[Smooth trajectories<br/>• Filter noise for stability]
-	E --> F[Outputs<br/>• robot_poses.json<br/>• detections_output.json]
-	F --> G[Visualize / Share (optional)<br/>• Interactive plot<br/>• GIF/MP4 export]
+	A[Input: data.json<br/>- Robot poses (origin frame)<br/>- Load detections (robot frame)] --> B[Preprocess timelines<br/>- Align timestamps<br/>- Interpolate gaps]
+	B --> C[Resolve orientation ambiguity<br/>- Handle frequent 180° flips]
+	C --> D[Transform to global frame<br/>- Compose robot and load transforms]
+	D --> E[Smooth trajectories<br/>- Filter noise for stability]
+	E --> F[Outputs<br/>- robot_poses.json<br/>- detections_output.json]
+	F --> G[Visualize or share (optional)<br/>- Interactive plot<br/>- GIF/MP4 export]
 ```
 
 
